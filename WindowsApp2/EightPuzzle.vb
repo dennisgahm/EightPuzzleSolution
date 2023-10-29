@@ -2,9 +2,8 @@
     '0 1 2
     '3 4 5
     '6 7 8
-    Dim blankLocation As Integer = 4
+    Public blankLocation As Integer = 4
     Public boardArray = New Integer() {0, 1, 2, 3, 4, 5, 6, 7, 8}
-    Public boardArraySolution = New Integer() {0, 1, 2, 3, 4, 5, 6, 7, 8}
 
     Public Sub New()
         Dim blnArray(8) As Boolean
@@ -28,6 +27,8 @@
             boardArray(i) = puzzle.boardArray(i)
         Next
     End Sub
+
+
 
     'strategy: 1D array for representing the 8puzzle
     'for every move, swap two numbers
