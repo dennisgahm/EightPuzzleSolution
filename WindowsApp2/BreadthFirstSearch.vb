@@ -1,17 +1,29 @@
 ﻿Public Class BreadthFirstSearch
     Dim eightPuzzle As EightPuzzle
     Public queue As Queue(Of EightPuzzle) = New Queue(Of EightPuzzle)()
-    Public queueMoves As Queue(Of String) = New Queue(Of String)()
-    Public boardArraySolution = New Integer() {0, 1, 2, 3, 4, 5, 6, 7, 8}
 
     Public Sub New(ByRef puzzle As EightPuzzle)
-        eightPuzzle = puzzle
+        eightPuzzle = New EightPuzzle(puzzle)
+        eightPuzzle.moves = New List(Of String)
+        'eightPuzzle.boardArrayMoves = New List(Of Integer())
         queue.Enqueue(eightPuzzle)
     End Sub
 
+    Public Function FindSolution()
+        While queue.Count > 0
+            'eightPuzzle = bfs.queue.Dequeue()
+            Dim nodeExpanded As EightPuzzle = ExpandNode()
+            If IsSolution(nodeExpanded) Then
+                Return nodeExpanded
+                Exit While
+            End If
+        End While
+        Return Nothing
+    End Function
+
     Public Function IsSolution(ByVal puzzle As EightPuzzle) As Boolean
         For i As Integer = 0 To 8
-            If puzzle.boardArray(i) <> boardArraySolution(i) Then
+            If puzzle.boardArray(i) <> i Then
                 Return False
             End If
         Next
