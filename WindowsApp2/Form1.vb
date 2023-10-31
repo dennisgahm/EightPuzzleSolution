@@ -1,8 +1,10 @@
 ﻿Public Class Form1
     Dim eightPuzzle As EightPuzzle
-    Dim eightPuzzleSolution As EightPuzzle
+    Dim eightPuzzleSolutionBFS As EightPuzzle
+    Dim eightPuzzleSolutionAStar As EightPuzzle
     Dim initialEightPuzzle As EightPuzzle
     Dim bfs As BreadthFirstSearch
+    Dim a_star_search As AStarSearch
 
     Private Sub Form1_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
     End Sub
@@ -16,9 +18,12 @@
 
         'Test BFS search
         bfs = New BreadthFirstSearch(eightPuzzle)
-        eightPuzzleSolution = bfs.FindSolution()
+        eightPuzzleSolutionBFS = bfs.FindSolution()
         'Do a real search until solution is found
 
+        'Test BFS search
+        a_star_search = New AStarSearch(eightPuzzle)
+        eightPuzzleSolutionAStar = a_star_search.FindSolution()
 
         PrintSolution()
     End Sub
@@ -53,16 +58,36 @@
     End Sub
 
     Private Sub PrintSolution()
+
         RichTextBox1.Text = ""
+        RichTextBox1.AppendText("BFS: " & vbNewLine & "Number of node expansions: " & bfs.numNodesExpanded & vbNewLine & vbNewLine)
 
         Dim eightPuzzleCurrent As EightPuzzle = New EightPuzzle(initialEightPuzzle)
-        For i As Integer = 0 To eightPuzzleSolution.moves.Count - 1
-            RichTextBox1.AppendText("Board #" & i & " " & eightPuzzleSolution.moves(i) & vbNewLine)
+        For i As Integer = 0 To eightPuzzleSolutionBFS.moves.Count - 1
+            RichTextBox1.AppendText("Board #" & i & " " & eightPuzzleSolutionBFS.moves(i) & vbNewLine)
             RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(0) & eightPuzzleCurrent.boardArray(1) & eightPuzzleCurrent.boardArray(2) & vbNewLine)
             RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(3) & eightPuzzleCurrent.boardArray(4) & eightPuzzleCurrent.boardArray(5) & vbNewLine)
             RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(6) & eightPuzzleCurrent.boardArray(7) & eightPuzzleCurrent.boardArray(8) & vbNewLine & vbNewLine)
 
-            eightPuzzleCurrent.Move(eightPuzzleSolution.moves(i))
+            eightPuzzleCurrent.Move(eightPuzzleSolutionBFS.moves(i))
+        Next
+
+        RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(0) & eightPuzzleCurrent.boardArray(1) & eightPuzzleCurrent.boardArray(2) & vbNewLine)
+        RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(3) & eightPuzzleCurrent.boardArray(4) & eightPuzzleCurrent.boardArray(5) & vbNewLine)
+        RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(6) & eightPuzzleCurrent.boardArray(7) & eightPuzzleCurrent.boardArray(8) & vbNewLine)
+
+        RichTextBox1.AppendText(vbNewLine & vbNewLine)
+
+        RichTextBox1.AppendText("A*: " & vbNewLine & "Number of node expansions: " & a_star_search.numNodesExpanded & vbNewLine & vbNewLine)
+
+        eightPuzzleCurrent = New EightPuzzle(initialEightPuzzle)
+        For i As Integer = 0 To eightPuzzleSolutionAStar.moves.Count - 1
+            RichTextBox1.AppendText("Board #" & i & " " & eightPuzzleSolutionAStar.moves(i) & vbNewLine)
+            RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(0) & eightPuzzleCurrent.boardArray(1) & eightPuzzleCurrent.boardArray(2) & vbNewLine)
+            RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(3) & eightPuzzleCurrent.boardArray(4) & eightPuzzleCurrent.boardArray(5) & vbNewLine)
+            RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(6) & eightPuzzleCurrent.boardArray(7) & eightPuzzleCurrent.boardArray(8) & vbNewLine & vbNewLine)
+
+            eightPuzzleCurrent.Move(eightPuzzleSolutionAStar.moves(i))
         Next
 
         RichTextBox1.AppendText(eightPuzzleCurrent.boardArray(0) & eightPuzzleCurrent.boardArray(1) & eightPuzzleCurrent.boardArray(2) & vbNewLine)
@@ -72,10 +97,11 @@
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        RichTextBox1.Text = ""
         PrintSolution()
 
-        If Array.IndexOf(initialEightPuzzle.boardArray, 4) <> initialEightPuzzle.blankLocation Then
-            initialEightPuzzle.blankLocation = initialEightPuzzle.blankLocation
-        End If
+        'If Array.IndexOf(initialEightPuzzle.boardArray, 4) <> initialEightPuzzle.blankLocation Then
+        '    initialEightPuzzle.blankLocation = initialEightPuzzle.blankLocation
+        'End If
     End Sub
 End Class

@@ -1,19 +1,19 @@
-﻿Public Class BreadthFirstSearch
+﻿Public Class AStarSearch
+
     Dim eightPuzzle As EightPuzzle
-    Public queue As Queue(Of EightPuzzle) = New Queue(Of EightPuzzle)()
+    Public priorityQueue As SortedList(Of Integer, EightPuzzle) = New SortedList(Of Integer, EightPuzzle)(New DuplicateKeyComparer())
     Public numNodesExpanded As Integer = 0
 
     Public Sub New(ByRef puzzle As EightPuzzle)
         eightPuzzle = New EightPuzzle(puzzle)
         eightPuzzle.moves = New List(Of String)
         'eightPuzzle.boardArrayMoves = New List(Of Integer())
-        queue.Enqueue(eightPuzzle)
+        priorityQueue.Add(0, eightPuzzle)
     End Sub
 
     Public Function FindSolution()
         numNodesExpanded = 0
-        While queue.Count > 0
-            'eightPuzzle = bfs.queue.Dequeue()
+        While priorityQueue.Count > 0
             Dim nodeExpanded As EightPuzzle = ExpandNode()
             If IsSolution(nodeExpanded) Then
                 Return nodeExpanded
@@ -33,10 +33,35 @@
         Return True
     End Function
 
+    Public Function CalculateF(ByVal puzzle As EightPuzzle) As Integer
+        Dim g_value As Integer = puzzle.moves.Count
+        'Calculate h value
+        Dim h_value As Integer = CalculateHManHattanDistance(puzzle)
+
+        Return g_value + h_value
+
+    End Function
+
+    Public Function CalculateHManHattanDistance(ByVal puzzle As EightPuzzle) As Integer
+        Dim hValue As Integer = 0
+        For i As Integer = 0 To 8
+            'distance
+            Dim tileNumber As Integer = puzzle.boardArray(i)
+            Dim horizontalDistance As Integer = Math.Abs(((i Mod 3) - tileNumber))
+
+            Dim doubleI As Double = i
+            Dim VerticalDistance As Integer = Math.Abs((Math.Floor(doubleI / 3.0) - tileNumber))
+
+            hValue += horizontalDistance + VerticalDistance
+        Next
+
+        Return hValue
+    End Function
 
     Public Function ExpandNode() As EightPuzzle
-        If queue.Count <> 0 Then
-            Dim nodeToExpand As EightPuzzle = queue.Dequeue()
+        If priorityQueue.Count <> 0 Then
+            Dim nodeToExpand As EightPuzzle = priorityQueue.ElementAt(0).Value
+            priorityQueue.RemoveAt(0)
             numNodesExpanded += 1
 
 
@@ -44,25 +69,25 @@
             If nodeToExpand.IsLegalMove("u") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("u")
-                queue.Enqueue(node2)
+                priorityQueue.Add(CalculateF(node2), node2)
             End If
 
             If nodeToExpand.IsLegalMove("d") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("d")
-                queue.Enqueue(node2)
+                priorityQueue.Add(CalculateF(node2), node2)
             End If
 
             If nodeToExpand.IsLegalMove("l") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("l")
-                queue.Enqueue(node2)
+                priorityQueue.Add(CalculateF(node2), node2)
             End If
 
             If nodeToExpand.IsLegalMove("r") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("r")
-                queue.Enqueue(node2)
+                priorityQueue.Add(CalculateF(node2), node2)
 
             End If
 
