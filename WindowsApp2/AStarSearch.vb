@@ -1,14 +1,20 @@
-﻿Public Class AStarSearch
+﻿'give the option to use manhattan distance or misplaced tiles
+
+
+Public Class AStarSearch
 
     Dim eightPuzzle As EightPuzzle
     Public priorityQueue As SortedList(Of Integer, EightPuzzle) = New SortedList(Of Integer, EightPuzzle)(New DuplicateKeyComparer())
     Public numNodesExpanded As Integer = 0
+    Public typeOfSearch As Integer = 0 '0 = manhattan distance, 1 = misplaced tiles
 
-    Public Sub New(ByRef puzzle As EightPuzzle)
+    'specify typeOfSearch as parameter
+    Public Sub New(ByRef puzzle As EightPuzzle, searchType As Integer)
         eightPuzzle = New EightPuzzle(puzzle)
         eightPuzzle.moves = New List(Of String)
         'eightPuzzle.boardArrayMoves = New List(Of Integer())
         priorityQueue.Add(0, eightPuzzle)
+        typeOfSearch = searchType
     End Sub
 
     Public Function FindSolution()
@@ -36,10 +42,28 @@
     Public Function CalculateF(ByVal puzzle As EightPuzzle) As Integer
         Dim g_value As Integer = puzzle.moves.Count
         'Calculate h value
-        Dim h_value As Integer = CalculateHManHattanDistance(puzzle)
+        'Give the option to use misplaced tiles or manhattan distance
+        Dim h_value As Integer = 0
+        If typeOfSearch = 1 Then
+            h_value = CalculateHMisplacedTiles(puzzle)
+        ElseIf typeOfSearch = 0 Then
+            h_value = CalculateHManHattanDistance(puzzle)
+        End If
 
         Return g_value + h_value
 
+    End Function
+
+    'Create a function for a heuristic for misplaced tiles
+    Public Function CalculateHMisplacedTiles(ByVal puzzle As EightPuzzle) As Integer
+        Dim hValue As Integer = 0
+        For i As Integer = 0 To 8
+            If puzzle.boardArray(i) <> i Then
+                hValue += 1
+            End If
+        Next
+
+        Return hValue
     End Function
 
     Public Function CalculateHManHattanDistance(ByVal puzzle As EightPuzzle) As Integer

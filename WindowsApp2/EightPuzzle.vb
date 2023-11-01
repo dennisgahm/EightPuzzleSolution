@@ -12,7 +12,7 @@
         ' Initialize the random-number generator.
         Randomize()
         Dim count As Integer = 0
-        While (count < 25)
+        While (count < 45)
             Dim randMove As Integer = CInt(Int((4 * Rnd())))
             Select Case randMove
                 Case 0
