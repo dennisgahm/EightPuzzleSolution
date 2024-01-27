@@ -7,6 +7,10 @@
     Public moves As List(Of String) = New List(Of String)
     'Public boardArrayMoves As List(Of Integer()) = New List(Of Integer())
 
+    Public Sub New(array As Integer())
+        boardArray = array
+    End Sub
+
     Public Sub New()
 
         ' Initialize the random-number generator.
@@ -170,5 +174,15 @@
         boardArray(index2) = tempVal
 
         Return True
+    End Function
+
+    Public Function Print() As String
+        Dim str As String = ""
+
+        For i As Integer = 0 To boardArray.Length - 1
+            str += "" & boardArray(i)
+        Next
+
+        Return str
     End Function
 End Class
