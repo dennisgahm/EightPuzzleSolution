@@ -2,12 +2,14 @@
     Dim eightPuzzle As EightPuzzle
     Public queue As Queue(Of EightPuzzle) = New Queue(Of EightPuzzle)()
     Public numNodesExpanded As Integer = 0
+    Public puzzleOrganizer As EightPuzzleOrganizer = New EightPuzzleOrganizer()
 
     Public Sub New(ByRef puzzle As EightPuzzle)
         eightPuzzle = New EightPuzzle(puzzle)
         eightPuzzle.moves = New List(Of String)
         'eightPuzzle.boardArrayMoves = New List(Of Integer())
         queue.Enqueue(eightPuzzle)
+        puzzleOrganizer.Add(eightPuzzle)
     End Sub
 
     Public Function FindSolution()
@@ -44,6 +46,9 @@
             If nodeToExpand.IsLegalMove("u") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("u")
+
+
+
                 queue.Enqueue(node2)
             End If
 
