@@ -47,29 +47,39 @@
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("u")
 
+                If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
 
-
-                queue.Enqueue(node2)
+                    queue.Enqueue(node2)
+                End If
             End If
 
             If nodeToExpand.IsLegalMove("d") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("d")
-                queue.Enqueue(node2)
-            End If
+                    If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
+
+                        queue.Enqueue(node2)
+                    End If
+                End If
 
             If nodeToExpand.IsLegalMove("l") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("l")
-                queue.Enqueue(node2)
-            End If
+                    If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
+
+                        queue.Enqueue(node2)
+                    End If
+                End If
 
             If nodeToExpand.IsLegalMove("r") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("r")
-                queue.Enqueue(node2)
+                    If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
 
-            End If
+                        queue.Enqueue(node2)
+                    End If
+
+                End If
 
             Return nodeToExpand
         End If
