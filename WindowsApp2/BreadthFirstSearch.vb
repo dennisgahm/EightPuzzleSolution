@@ -48,8 +48,8 @@
                 node2.Move("u")
 
                 If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
-
                     queue.Enqueue(node2)
+                    puzzleOrganizer.Add(node2)
                 End If
             End If
 
