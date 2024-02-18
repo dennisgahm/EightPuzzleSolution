@@ -20,6 +20,8 @@
             If IsSolution(nodeExpanded) Then
                 Return nodeExpanded
                 Exit While
+            Else
+
             End If
         End While
         Return Nothing
@@ -47,7 +49,7 @@
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("u")
 
-                If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
+                If (puzzleOrganizer.BinarySearch(node2) = -1) Then
                     queue.Enqueue(node2)
                     puzzleOrganizer.Add(node2)
                 End If
@@ -56,30 +58,33 @@
             If nodeToExpand.IsLegalMove("d") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("d")
-                    If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
+                If (puzzleOrganizer.BinarySearch(node2) = -1) Then
 
-                        queue.Enqueue(node2)
-                    End If
+                    queue.Enqueue(node2)
+                    puzzleOrganizer.Add(node2)
                 End If
+            End If
 
             If nodeToExpand.IsLegalMove("l") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("l")
-                    If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
+                If (puzzleOrganizer.BinarySearch(node2) = -1) Then
 
-                        queue.Enqueue(node2)
-                    End If
+                    queue.Enqueue(node2)
+                    puzzleOrganizer.Add(node2)
                 End If
+            End If
 
             If nodeToExpand.IsLegalMove("r") Then
                 Dim node2 As EightPuzzle = New EightPuzzle(nodeToExpand)
                 node2.Move("r")
-                    If (Not puzzleOrganizer.BinarySearch(node2) = -1) Then
+                If (puzzleOrganizer.BinarySearch(node2) = -1) Then
 
-                        queue.Enqueue(node2)
-                    End If
-
+                    queue.Enqueue(node2)
+                    puzzleOrganizer.Add(node2)
                 End If
+
+            End If
 
             Return nodeToExpand
         End If
